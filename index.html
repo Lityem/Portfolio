@@ -126,16 +126,16 @@
 <body>
   <header class="nav">
     <div class="nav-inner">
-      <div class="brand">⚡️ My Portfolio</div>
+      <div class="brand"> My Portfolio</div>
       <nav class="nav-links">
         <a href="#about">About</a>
         <a href="#projects">Projects</a>
-        <a href="#documents">Documents</a>
+        <a href="#documents">My Grades</a>
         <a href="#duolingo">Duolingo</a>
         <a href="#achievements">Achievements</a>
       </nav>
       <button id="themeBtn" class="btn ghost" title="Toggle theme">🌓</button>
-      <button id="editToggle" class="btn" title="Toggle edit mode">✏️ Edit</button>
+      <button id="editToggle" class="btn" title="Toggle edit mode"></button>
     </div>
   </header>
 
@@ -146,35 +146,35 @@
         <img id="avatar" class="avatar" alt="Avatar" src="" />
         <div>
           <span class="pill">Portfolio</span>
-          <h1 id="nameDisplay">Your Name</h1>
-          <p id="taglineDisplay">Short tagline • Developer • Student</p>
+          <h1 id="nameDisplay">Youssef Litayem</h1>
+          <p id="taglineDisplay">Short tagline • Highschool student</p>
           <div class="hero-actions">
-            <a id="emailLink" class="btn" href="#">📧 Email</a>
-            <a id="githubLink" class="btn ghost" href="#" target="_blank">💻 GitHub</a>
-            <a id="linkedinLink" class="btn ghost" href="#" target="_blank">🔗 LinkedIn</a>
+            <a id="emailLink" class="btn" href="#">Email</a>
+            <a id="githubLink" class="btn ghost" href="#" target="_blank">GitHub</a>
+            <a id="linkedinLink" class="btn ghost" href="#" target="_blank">My school</a>
           </div>
         </div>
       </div>
       <form id="heroForm" class="row cols-3 hidden" style="margin-top:16px;">
         <div>
           <label>Name</label>
-          <input id="nameInput" type="text" placeholder="Your Name" />
+          <input id="nameInput" type="text" placeholder="Youssef Litayem" />
         </div>
         <div>
           <label>Tagline</label>
-          <input id="taglineInput" type="text" placeholder="Student • Developer" />
+          <input id="taglineInput" type="text" placeholder="High school student " />
         </div>
         <div>
           <label>Email</label>
-          <input id="emailInput" type="text" placeholder="name@email.com" />
+          <input id="emailInput" type="text" placeholder="lityempro@gmail.com" />
         </div>
         <div>
           <label>GitHub URL</label>
-          <input id="githubInput" type="url" placeholder="https://github.com/username" />
+          <input id="githubInput" type="url" placeholder="https://github.com/lityem" />
         </div>
         <div>
-          <label>LinkedIn URL</label>
-          <input id="linkedinInput" type="url" placeholder="https://linkedin.com/in/username" />
+          <label>School Website</label>
+          <input id="linkedinInput" type="url" placeholder="https://www.lyceevoltaire.org/" />
         </div>
         <div>
           <label>Avatar (image)</label>
@@ -189,14 +189,14 @@
         <div class="section-title">About Me</div>
         <div class="toolbar">
           <button id="saveAllBtn" class="btn hidden">💾 Save</button>
-          <button id="exportBtn" class="btn ghost">⬇️ Export Data</button>
-          <label class="btn ghost" for="importFile">⬆️ Import Data</label>
+          <button id="exportBtn" class="btn ghost"></button>
+          
           <input id="importFile" class="hidden" type="file" accept="application/json" />
         </div>
       </div>
       <div class="card">
         <textarea id="aboutInput" class="hidden" placeholder="Write a short intro about yourself…"></textarea>
-        <p id="aboutDisplay" class="muted" style="white-space:pre-wrap; margin:0;">Hey! I'm a developer who ships clean UI, spicy ideas, and real-world projects. I like embedded systems, web apps, and cheeky side quests. 🚀</p>
+        <p id="aboutDisplay" class="muted" style="white-space:pre-wrap; margin:0;">Hello there, I am a student studying at the highschool Lycée FrancoQatarien Voltaire Doha, I have a passion for computer science, history, economics, buisness and politics.</p>
       </div>
     </section>
 
@@ -283,7 +283,7 @@
       <div class="section-head">
         <div class="section-title">Duolingo English Test</div>
         <div class="toolbar">
-          <button id="editDuoBtn" class="btn hidden">✏️ Edit</button>
+          <button id="editDuoBtn" class="btn hidden"></button>
         </div>
       </div>
       <div class="card">
@@ -396,12 +396,12 @@
 
   const defaultData = {
     about: {
-      name: 'Your Name',
-      tagline: 'Student • Developer',
-      bio: "Hey! I'm a developer who ships clean UI, spicy ideas, and real-world projects. I like embedded systems, web apps, and cheeky side quests. 🚀",
-      email: 'you@example.com',
-      github: 'https://github.com/username',
-      linkedin: 'https://linkedin.com/in/username',
+      name: 'Youssef Litayem',
+      tagline: 'Highschool student ',
+      bio: "Hello there, I am a student studying at the highschool Lycée FrancoQatarien Voltaire Doha, I have a passion for computer science, history, economics, buisness and politics.",
+      email: 'lityempro@gmail.com',
+      github: 'https://github.com/lityem',
+      linkedin: 'https://www.lyceevoltaire.org/',
       avatarKey: null
     },
     projects: [
