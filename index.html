@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #0f162e;
+      --muted: #9aa4b2;
+      --text: #e6e9ef;
+      --primary: #6ee7b7; /* mint */
+      --accent: #60a5fa; /* blue */
+      --ring: rgba(110,231,183,.5);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    [data-theme="light"] {
+      --bg: #f7f8fb;
+      --panel: #ffffff;
+      --muted: #52606d;
+      --text: #0b1220;
+      --primary: #2563eb;
+      --accent: #10b981;
+      --ring: rgba(37,99,235,.35);
+      --shadow: 0 8px 24px rgba(2,6,23,.08);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 80% -10%, rgba(96,165,250,.12), transparent 60%),
+                  radial-gradient(800px 400px at 10% -10%, rgba(110,231,183,.12), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container { max-width: 1080px; padding: 24px; margin: 0 auto; }
+
+    /* Top Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(10px);
+      background: color-mix(in oklab, var(--bg) 75%, transparent);
+      border-bottom: 1px solid color-mix(in oklab, var(--muted) 25%, transparent);
+    }
+    .nav-inner { display: flex; align-items: center; gap: 16px; padding: 12px 24px; max-width: 1080px; margin: 0 auto; }
+    .brand { font-weight: 800; letter-spacing: .5px; font-size: 18px; }
+    .nav-links { margin-left: auto; display: flex; gap: 14px; flex-wrap: wrap; }
+    .nav-links a { padding: 8px 12px; border-radius: 10px; color: var(--text); }
+    .nav-links a:hover { background: color-mix(in oklab, var(--panel) 80%, transparent); text-decoration: none; }
+
+    .btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid color-mix(in oklab, var(--muted) 30%, transparent); background: var(--panel); color: var(--text); padding: 10px 14px; border-radius: 12px; box-shadow: var(--shadow); transition: transform .08s ease; }
+    .btn:hover { transform: translateY(-1px); text-decoration: none; }
+    .btn.ghost { background: transparent; box-shadow: none; }
+
+    .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 999px; background: color-mix(in oklab, var(--panel) 85%, transparent); border: 1px solid color-mix(in oklab, var(--muted) 30%, transparent); color: var(--muted); font-size: 12px; }
+
+    /* Hero */
+    .hero { padding: 48px 24px 12px; }
+    .hero-grid { display: grid; grid-template-columns: 140px 1fr; gap: 24px; align-items: center; }
+    .avatar { width: 120px; height: 120px; border-radius: 20px; background: color-mix(in oklab, var(--panel) 80%, black 10%); border: 1px solid color-mix(in oklab, var(--muted) 30%, transparent); box-shadow: var(--shadow); object-fit: cover; }
+    .hero h1 { margin: 6px 0 6px; font-size: clamp(24px, 4vw, 36px); letter-spacing: .2px; }
+    .hero p { margin: 0; color: var(--muted); }
+    .hero-actions { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 10px; }
+
+    /* Section */
+    section { padding: 28px 0; }
+    .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 12px; }
+    .section-title { font-size: 20px; font-weight: 700; letter-spacing: .2px; }
+
+    .card { background: var(--panel); border: 1px solid color-mix(in oklab, var(--muted) 30%, transparent); border-radius: 16px; padding: 16px; box-shadow: var(--shadow); }
+    .grid { display: grid; gap: 14px; }
+    @media (min-width: 720px) { .grid.cols-2 { grid-template-columns: repeat(2, 1fr); } .grid.cols-3 { grid-template-columns: repeat(3, 1fr);} }
+
+    /* Forms */
+    .row { display: grid; gap: 10px; grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .row.cols-2 { grid-template-columns: repeat(2, 1fr);} .row.cols-3 { grid-template-columns: repeat(3, 1fr);} }
+    label { font-size: 12px; color: var(--muted); }
+    input[type="text"], input[type="url"], input[type="number"], input[type="date"], textarea, input[type="file"] { width: 100%; padding: 10px 12px; border-radius: 10px; color: var(--text); background: color-mix(in oklab, var(--panel) 85%, transparent); border: 1px solid color-mix(in oklab, var(--muted) 35%, transparent); }
+    textarea { min-height: 120px; }
+
+    .toolbar { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .project-card h3 { margin: 6px 0; font-size: 16px; }
+    .project-card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .tag { font-size: 11px; color: var(--muted); padding: 2px 8px; border: 1px solid color-mix(in oklab, var(--muted) 35%, transparent); border-radius: 999px; }
+
+    .list { display: grid; gap: 10px; }
+    .list-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; border-radius: 12px; background: color-mix(in oklab, var(--panel) 85%, transparent); border: 1px solid color-mix(in oklab, var(--muted) 30%, transparent); }
+    .list-item .meta { display: grid; gap: 2px; }
+    .list-item small { color: var(--muted); }
+
+    .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    @media (min-width: 720px) { .gallery { grid-template-columns: repeat(4, 1fr);} }
+    .thumb { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid color-mix(in oklab, var(--muted) 30%, transparent); background: #111; }
+    .thumb img { display: block; width: 100%; height: 140px; object-fit: cover; }
+
+    .dropzone { border: 2px dashed color-mix(in oklab, var(--muted) 35%, transparent); border-radius: 14px; padding: 16px; text-align: center; color: var(--muted); }
+    .dropzone.drag { border-color: var(--primary); background: color-mix(in oklab, var(--panel) 80%, transparent); color: var(--text); }
+
+    .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.8); display: none; align-items: center; justify-content: center; padding: 24px; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 100%; max-height: 90vh; border-radius: 14px; }
+
+    .badge { font-size: 12px; padding: 2px 8px; border-radius: 999px; background: color-mix(in oklab, var(--accent) 30%, transparent); color: var(--text); border: 1px solid color-mix(in oklab, var(--muted) 35%, transparent); }
+
+    .muted { color: var(--muted); }
+    .hidden { display: none !important; }
+
+    details { background: color-mix(in oklab, var(--panel) 85%, transparent); border: 1px dashed color-mix(in oklab, var(--muted) 35%, transparent); border-radius: 12px; padding: 12px 16px; }
+    details summary { cursor: pointer; font-weight: 600; }
+
+    .footer { padding: 40px 0 24px; text-align: center; color: var(--muted); font-size: 14px; }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="brand">⚡️ My Portfolio</div>
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#documents">Documents</a>
+        <a href="#duolingo">Duolingo</a>
+        <a href="#achievements">Achievements</a>
+      </nav>
+      <button id="themeBtn" class="btn ghost" title="Toggle theme">🌓</button>
+      <button id="editToggle" class="btn" title="Toggle edit mode">✏️ Edit</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO -->
+    <section class="hero card" id="top">
+      <div class="hero-grid">
+        <img id="avatar" class="avatar" alt="Avatar" src="" />
+        <div>
+          <span class="pill">Portfolio</span>
+          <h1 id="nameDisplay">Your Name</h1>
+          <p id="taglineDisplay">Short tagline • Developer • Student</p>
+          <div class="hero-actions">
+            <a id="emailLink" class="btn" href="#">📧 Email</a>
+            <a id="githubLink" class="btn ghost" href="#" target="_blank">💻 GitHub</a>
+            <a id="linkedinLink" class="btn ghost" href="#" target="_blank">🔗 LinkedIn</a>
+          </div>
+        </div>
+      </div>
+      <form id="heroForm" class="row cols-3 hidden" style="margin-top:16px;">
+        <div>
+          <label>Name</label>
+          <input id="nameInput" type="text" placeholder="Your Name" />
+        </div>
+        <div>
+          <label>Tagline</label>
+          <input id="taglineInput" type="text" placeholder="Student • Developer" />
+        </div>
+        <div>
+          <label>Email</label>
+          <input id="emailInput" type="text" placeholder="name@email.com" />
+        </div>
+        <div>
+          <label>GitHub URL</label>
+          <input id="githubInput" type="url" placeholder="https://github.com/username" />
+        </div>
+        <div>
+          <label>LinkedIn URL</label>
+          <input id="linkedinInput" type="url" placeholder="https://linkedin.com/in/username" />
+        </div>
+        <div>
+          <label>Avatar (image)</label>
+          <input id="avatarInput" type="file" accept="image/*" />
+        </div>
+      </form>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-head">
+        <div class="section-title">About Me</div>
+        <div class="toolbar">
+          <button id="saveAllBtn" class="btn hidden">💾 Save</button>
+          <button id="exportBtn" class="btn ghost">⬇️ Export Data</button>
+          <label class="btn ghost" for="importFile">⬆️ Import Data</label>
+          <input id="importFile" class="hidden" type="file" accept="application/json" />
+        </div>
+      </div>
+      <div class="card">
+        <textarea id="aboutInput" class="hidden" placeholder="Write a short intro about yourself…"></textarea>
+        <p id="aboutDisplay" class="muted" style="white-space:pre-wrap; margin:0;">Hey! I'm a developer who ships clean UI, spicy ideas, and real-world projects. I like embedded systems, web apps, and cheeky side quests. 🚀</p>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="section-head">
+        <div class="section-title">Coding Projects</div>
+        <div class="toolbar">
+          <input id="projectSearch" type="text" placeholder="Search projects…" style="max-width:260px;"/>
+          <button id="addProjectBtn" class="btn hidden">➕ Add</button>
+        </div>
+      </div>
+      <div id="projectsGrid" class="grid cols-2"></div>
+
+      <form id="projectForm" class="card hidden" style="margin-top:12px;">
+        <div class="row cols-3">
+          <div>
+            <label>Title</label>
+            <input id="pTitle" type="text" placeholder="Project name"/>
+          </div>
+          <div>
+            <label>URL</label>
+            <input id="pUrl" type="url" placeholder="https://…"/>
+          </div>
+          <div>
+            <label>Tags (comma)</label>
+            <input id="pTags" type="text" placeholder="web, python"/>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Description</label>
+            <textarea id="pDesc" placeholder="What did you build?"></textarea>
+          </div>
+        </div>
+        <div class="toolbar">
+          <button type="button" id="saveProject" class="btn">💾 Save Project</button>
+          <button type="button" id="cancelProject" class="btn ghost">✖ Cancel</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- DOCUMENTS (Grades Ps) -->
+     
+    <section id="documents">
+      <div class="section-head">
+        <div class="section-title">Grades — PDFs</div>
+        <div class="toolbar">
+          <button id="addGradePdfBtn" class="btn hidden">➕ Upload PDF</button>
+          <button id="addGradeUrlBtn" class="btn hidden">🔗 Add by URL</button>
+        </div>
+      </div>
+      <div id="gradesList" class="list"></div>
+<div class="toolbar">
+  <a class="btn" href="https://lityem.github.io/Grades/" target="_blank" rel="noopener">📄 Public Grades ↗</a>
+  <button id="addGradePdfBtn" class="btn hidden">➕ Upload PDF</button>
+  <button id="addGradeUrlBtn" class="btn hidden">🔗 Add by URL</button>
+</div>
+      <form id="gradeForm" class="card hidden" style="margin-top:12px;">
+        <div class="row cols-3">
+          <div>
+            <label>Display Name</label>
+            <input id="gName" type="text" placeholder="Transcript 2023"/>
+          </div>
+          <div>
+            <label>Attach PDF file</label>
+            <input id="gFile" type="file" accept="application/pdf"/>
+          </div>
+          <div>
+            <label>…or PDF URL</label>
+            <input id="gUrl" type="url" placeholder="https://…/grades.pdf"/>
+          </div>
+        </div>
+        <div class="toolbar">
+          <button type="button" id="saveGrade" class="btn">💾 Save PDF</button>
+          <button type="button" id="cancelGrade" class="btn ghost">✖ Cancel</button>
+        </div>
+        <p class="muted" style="margin-top:8px;">Uploads are stored locally in your browser (IndexedDB). For public hosting, use the URL field and upload your file to your site repo or Drive with public link.</p>
+      </form>
+    </section>
+
+    <!-- DUOLINGO -->
+    <section id="duolingo">
+      <div class="section-head">
+        <div class="section-title">Duolingo English Test</div>
+        <div class="toolbar">
+          <button id="editDuoBtn" class="btn hidden">✏️ Edit</button>
+        </div>
+      </div>
+      <div class="card">
+        <div id="duoDisplay">
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <span class="badge" id="duoScoreBadge">Score: —</span>
+            <span class="badge" id="duoDateBadge">Date: —</span>
+          </div>
+          <div id="duoCert" style="margin-top:12px;"></div>
+        </div>
+
+        <form id="duoForm" class="hidden" style="margin-top:12px;">
+          <div class="row cols-3">
+            <div>
+              <label>Score</label>
+              <input id="dScore" type="number" min="10" max="160" step="5" placeholder="e.g., 130" />
+            </div>
+            <div>
+              <label>Test Date</label>
+              <input id="dDate" type="date" />
+            </div>
+            <div>
+              <label>Certificate PDF (optional)</label>
+              <input id="dFile" type="file" accept="application/pdf" />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label>…or Certificate URL</label>
+              <input id="dUrl" type="url" placeholder="https://…/duolingo.pdf" />
+            </div>
+          </div>
+          <div class="toolbar">
+            <button type="button" id="saveDuo" class="btn">💾 Save</button>
+            <button type="button" id="cancelDuo" class="btn ghost">✖ Cancel</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ACHIEVEMENTS -->
+    <section id="achievements">
+      <div class="section-head">
+        <div class="section-title">Trophies, Certificates & Achievements</div>
+        <div class="toolbar">
+          <button id="addAchBtn" class="btn hidden">🏆 Upload</button>
+        </div>
+      </div>
+      <div id="achGallery" class="gallery"></div>
+
+      <form id="achForm" class="card hidden" style="margin-top:12px;">
+        <div class="dropzone" id="achDrop">Drag & drop images here or click to select</div>
+        <input id="achFiles" type="file" accept="image/*" multiple class="hidden" />
+        <p class="muted" style="margin-top:8px;">Images are stored locally in your browser (IndexedDB). Keep each image under ~1–2 MB for performance. You can also commit images to your repo and swap them to URL references later.</p>
+        <div class="toolbar" style="margin-top:10px;">
+          <button type="button" id="closeAch" class="btn ghost">Done</button>
+        </div>
+      </form>
+    </section>
+
+    <section>
+      <details>
+        <summary>📦 How to publish this site (GitHub Pages / Netlify / Vercel)</summary>
+        <ol>
+          <li>Create a folder with this <strong>index.html</strong> file.</li>
+          <li><strong>GitHub Pages:</strong> Create a repo, add the file, push, then Settings → Pages → Deploy from <em>main</em> (root). URL appears in a minute.</li>
+          <li><strong>Netlify:</strong> Drag-and-drop the folder at app.netlify.com → instant deploy.</li>
+          <li><strong>Vercel:</strong> Import the repo on vercel.com → Deploy.</li>
+          <li>Remember: uploads you add via the site are saved <em>in your browser only</em>. To make files public, commit them to the repo (or host them) and replace with URLs.</li>
+        </ol>
+      </details>
+    </section>
+
+    <div class="footer">Made with ♥ — offline-ready, no backend. Dark/Light, local save, and import/export built-in.</div>
+  </main>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true"><img alt="Preview"/></div>
+
+  <script>
+  // ======= Utilities =======
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const on = (el, ev, fn) => el.addEventListener(ev, fn);
+  const uid = () => Math.random().toString(36).slice(2, 9);
+  const when = (p) => new Promise(r => setTimeout(r, p));
+
+  // Smooth scroll for internal anchors
+  on(document, 'click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (a) {
+      const id = a.getAttribute('href').slice(1);
+      const tgt = document.getElementById(id);
+      if (tgt) { e.preventDefault(); tgt.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    }
+  });
+
+  // ======= Theme =======
+  const themeBtn = $('#themeBtn');
+  const userTheme = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', userTheme);
+  on(themeBtn, 'click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+
+  // ======= Data & Storage =======
+  const STORAGE_KEY = 'portfolioData.v1';
+
+  const defaultData = {
+    about: {
+      name: 'Your Name',
+      tagline: 'Student • Developer',
+      bio: "Hey! I'm a developer who ships clean UI, spicy ideas, and real-world projects. I like embedded systems, web apps, and cheeky side quests. 🚀",
+      email: 'you@example.com',
+      github: 'https://github.com/username',
+      linkedin: 'https://linkedin.com/in/username',
+      avatarKey: null
+    },
+    projects: [
+      { id: uid(), title: '2048 Video Game', url: 'https://lityem.github.io/2048-game/', desc: 'Classic 2048 puzzle. Arrow keys to merge tiles.', tags: ['game','web','javascript'] },
+      { id: uid(), title: 'Autism Diagnosis Test', url: 'https://lityem.github.io/Autism-test/', desc: 'Self-assessment style quiz UI (for learning).', tags: ['quiz','web'] },
+      { id: uid(), title: 'Guess the Country by its Flag', url: 'https://lityem.github.io/Guess-the-country-flag/', desc: 'Flag guessing game covering world countries.', tags: ['game','quiz','web'] },
+      { id: uid(), title: 'Life Expectancy Estimate Quiz', url: 'https://lityem.github.io/Life-expectancy/', desc: 'Lifestyle inputs → rough life expectancy estimate.', tags: ['calculator','web'] },
+      { id: uid(), title: "Child's Adult Height Estimator", url: 'https://lityem.github.io/Adult-height-calculator/', desc: 'Predicts adult height from parental data & growth norms.', tags: ['calculator','web'] },
+      { id: uid(), title: 'IQ Test', url: 'https://lityem.github.io/Iq-test/', desc: 'Timed multiple-choice IQ-style practice quiz.', tags: ['quiz','web'] },
+      { id: uid(), title: 'Psychopathy Test', url: 'https://lityem.github.io/Psychopath/', desc: 'Questionnaire-based screening (educational, not clinical).', tags: ['quiz','web'] },
+      { id: uid(), title: 'YouTube Sponsorship Value Estimator', url: 'https://lityem.github.io/Youtube-sponsorship-value-test/', desc: 'Estimates sponsor pricing from subs, views, and niche.', tags: ['calculator','creator','web'] },
+      { id: uid(), title: 'Political Compass Test', url: 'https://lityem.github.io/compass/', desc: '2D political compass with smooth UI.', tags: ['quiz','politics','web'] },
+      { id: uid(), title: 'Political Ideology Test', url: 'https://lityem.github.io/Political-Ideology-test/', desc: 'Multi-axis ideology assessment.', tags: ['quiz','politics','web'] },
+      { id: uid(), title: 'Future Investment Calculator', url: 'https://lityem.github.io/investment/', desc: 'Investment growth & compounding calculator with charts.', tags: ['calculator','finance','web'] },
+      { id: uid(), title: 'Twitter News Bot (WIP)', url: '#', desc: 'Automated news/tweets fetcher — in progress.', tags: ['bot','WIP'] },
+      { id: uid(), title: 'AI Coding Language Translator (WIP)', url: '#', desc: 'Natural language → code helper — in progress.', tags: ['tool','WIP'] }
+    ],
+    documents: {
+      grades: [
+      
+    ],
+      duolingo: { score: null, date: null, fileKey: null, url: null }
+    },
+    achievements: []
+  };
+
+  let state = null;
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      state = raw ? JSON.parse(raw) : structuredClone(defaultData);
+    } catch (e) {
+      console.error('Failed to load state', e);
+      state = structuredClone(defaultData);
+    }
+  }
+  function saveState() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  // ======= IndexedDB (for files) =======
+  const DB_NAME = 'portfolioDB';
+  const DB_VERSION = 1;
+  const STORE = 'files';
+
+  function openDB() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains(STORE)) {
+          db.createObjectStore(STORE);
+        }
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+  async function putFile(key, blob) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE, 'readwrite');
+      tx.objectStore(STORE).put(blob, key);
+      tx.oncomplete = () => resolve(key);
+      tx.onerror = () => reject(tx.error);
+    });
+  }
+  async function getFile(key) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE, 'readonly');
+      const req = tx.objectStore(STORE).get(key);
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => reject(req.error);
+    });
+  }
+  async function delFile(key) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE, 'readwrite');
+      tx.objectStore(STORE).delete(key);
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => reject(tx.error);
+    });
+  }
+
+  function blobUrl(blob) { return URL.createObjectURL(blob); }
+
+  // ======= UI Bindings =======
+  const editToggle = $('#editToggle');
+  const saveAllBtn = $('#saveAllBtn');
+
+  const nameDisplay = $('#nameDisplay');
+  const taglineDisplay = $('#taglineDisplay');
+  const emailLink = $('#emailLink');
+  const githubLink = $('#githubLink');
+  const linkedinLink = $('#linkedinLink');
+  const avatarImg = $('#avatar');
+
+  const heroForm = $('#heroForm');
+  const nameInput = $('#nameInput');
+  const taglineInput = $('#taglineInput');
+  const emailInput = $('#emailInput');
+  const githubInput = $('#githubInput');
+  const linkedinInput = $('#linkedinInput');
+  const avatarInput = $('#avatarInput');
+
+  const aboutDisplay = $('#aboutDisplay');
+  const aboutInput = $('#aboutInput');
+
+  const projectsGrid = $('#projectsGrid');
+  const addProjectBtn = $('#addProjectBtn');
+  const projectForm = $('#projectForm');
+  const pTitle = $('#pTitle');
+  const pUrl = $('#pUrl');
+  const pTags = $('#pTags');
+  const pDesc = $('#pDesc');
+  const saveProject = $('#saveProject');
+  const cancelProject = $('#cancelProject');
+  const projectSearch = $('#projectSearch');
+
+  const addGradePdfBtn = $('#addGradePdfBtn');
+  const addGradeUrlBtn = $('#addGradeUrlBtn');
+  const gradesList = $('#gradesList');
+  const gradeForm = $('#gradeForm');
+  const gName = $('#gName');
+  const gFile = $('#gFile');
+  const gUrl = $('#gUrl');
+  const saveGrade = $('#saveGrade');
+  const cancelGrade = $('#cancelGrade');
+
+  const duoDisplay = $('#duoDisplay');
+  const duoForm = $('#duoForm');
+  const editDuoBtn = $('#editDuoBtn');
+  const dScore = $('#dScore');
+  const dDate = $('#dDate');
+  const dFile = $('#dFile');
+  const dUrl = $('#dUrl');
+  const saveDuo = $('#saveDuo');
+  const cancelDuo = $('#cancelDuo');
+  const duoScoreBadge = $('#duoScoreBadge');
+  const duoDateBadge = $('#duoDateBadge');
+  const duoCert = $('#duoCert');
+
+  const addAchBtn = $('#addAchBtn');
+  const achForm = $('#achForm');
+  const achDrop = $('#achDrop');
+  const achFiles = $('#achFiles');
+  const closeAch = $('#closeAch');
+  const achGallery = $('#achGallery');
+
+  const exportBtn = $('#exportBtn');
+  const importFile = $('#importFile');
+
+  let editMode = false;
+  let editingProjectId = null;
+
+  function setEditMode(on) {
+    editMode = on;
+    [heroForm, aboutInput, addProjectBtn, projectForm, addGradePdfBtn, addGradeUrlBtn, gradeForm, editDuoBtn, duoForm, addAchBtn, achForm, saveAllBtn]
+      .forEach(el => el.classList.toggle('hidden', !on && ![projectForm, gradeForm, duoForm, achForm].includes(el)));
+
+    aboutDisplay.classList.toggle('hidden', on);
+    if (on) {
+      // Fill forms with state
+      nameInput.value = state.about.name || '';
+      taglineInput.value = state.about.tagline || '';
+      emailInput.value = state.about.email || '';
+      githubInput.value = state.about.github || '';
+      linkedinInput.value = state.about.linkedin || '';
+      aboutInput.value = state.about.bio || '';
+    }
+    editToggle.textContent = on ? '✅ Done' : '✏️ Edit';
+  }
+
+  on(editToggle, 'click', () => setEditMode(!editMode));
+  on(saveAllBtn, 'click', () => {
+    // Save about & hero
+    state.about.name = nameInput.value.trim();
+    state.about.tagline = taglineInput.value.trim();
+    state.about.email = emailInput.value.trim();
+    state.about.github = githubInput.value.trim();
+    state.about.linkedin = linkedinInput.value.trim();
+    state.about.bio = aboutInput.value.trim();
+    saveState();
+    renderAll();
+  });
+
+  // Avatar upload
+  on(avatarInput, 'change', async () => {
+    const f = avatarInput.files?.[0];
+    if (!f) return;
+    const key = 'file-' + uid();
+    await putFile(key, f);
+    state.about.avatarKey = key;
+    saveState();
+    renderHero();
+  });
+
+  function renderHero() {
+    const a = state.about;
+    nameDisplay.textContent = a.name || 'Your Name';
+    taglineDisplay.textContent = a.tagline || '';
+    emailLink.href = a.email ? `mailto:${a.email}` : '#';
+    githubLink.href = a.github || '#';
+    linkedinLink.href = a.linkedin || '#';
+
+    if (a.avatarKey) {
+      getFile(a.avatarKey).then(b => { if (b) avatarImg.src = blobUrl(b); });
+    } else {
+      avatarImg.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" rx="20" fill="%23e2e8f0"/><circle cx="60" cy="46" r="22" fill="%23cbd5e1"/><rect x="18" y="78" width="84" height="24" rx="12" fill="%23cbd5e1"/></svg>`);
+    }
+    aboutDisplay.textContent = a.bio || '';
+  }
+
+  // ======= Projects =======
+  on(addProjectBtn, 'click', () => { projectForm.classList.remove('hidden'); editingProjectId = null; pTitle.value=''; pUrl.value=''; pTags.value=''; pDesc.value=''; window.scrollTo({top: projectForm.offsetTop - 80, behavior:'smooth'}); });
+  on(cancelProject, 'click', () => projectForm.classList.add('hidden'));
+  on(saveProject, 'click', () => {
+    const item = { id: editingProjectId || uid(), title: pTitle.value.trim(), url: pUrl.value.trim(), desc: pDesc.value.trim(), tags: pTags.value.split(',').map(s=>s.trim()).filter(Boolean) };
+    if (!item.title || !item.url) { alert('Title and URL are required'); return; }
+    const i = state.projects.findIndex(x => x.id === item.id);
+    if (i >= 0) state.projects[i] = item; else state.projects.unshift(item);
+    saveState();
+    projectForm.classList.add('hidden');
+    renderProjects();
+  });
+
+  function renderProjects() {
+    const q = projectSearch.value.toLowerCase();
+    const list = q ? state.projects.filter(p => (p.title+" "+p.desc+" "+(p.tags||[]).join(' ')).toLowerCase().includes(q)) : state.projects;
+    projectsGrid.innerHTML = '';
+    for (const p of list) {
+      const card = document.createElement('div');
+      card.className = 'card project-card';
+      card.innerHTML = `
+        <div style="display:flex; justify-content:space-between; gap:10px; align-items:flex-start;">
+          <div>
+            <h3>${escapeHtml(p.title)}</h3>
+            <p>${escapeHtml(p.desc || '')}</p>
+            <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">${(p.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <a class="btn" href="${p.url}" target="_blank" rel="noopener">Open ↗</a>
+            ${editMode ? `<button class="btn ghost" data-edit="${p.id}">Edit</button><button class="btn ghost" data-del="${p.id}">Delete</button>` : ''}
+          </div>
+        </div>`;
+      projectsGrid.appendChild(card);
+    }
+
+    if (editMode) {
+      on(projectsGrid, 'click', (e) => {
+        const del = e.target.closest('[data-del]');
+        const ed = e.target.closest('[data-edit]');
+        if (del) {
+          const id = del.getAttribute('data-del');
+          state.projects = state.projects.filter(x => x.id !== id);
+          saveState();
+          renderProjects();
+        }
+        if (ed) {
+          const id = ed.getAttribute('data-edit');
+          const item = state.projects.find(x => x.id === id);
+          if (!item) return;
+          editingProjectId = id;
+          pTitle.value = item.title; pUrl.value = item.url; pTags.value = (item.tags||[]).join(', '); pDesc.value = item.desc || '';
+          projectForm.classList.remove('hidden');
+          window.scrollTo({ top: projectForm.offsetTop - 80, behavior: 'smooth' });
+        }
+      });
+    }
+  }
+  on(projectSearch, 'input', renderProjects);
+
+  // ======= Grades Pdfs =======
+  // ======= Grades PDFs =======
+  
+  let addingGrade = false;
+  on(addGradePdfBtn, 'click', () => { gradeForm.classList.remove('hidden'); gName.value=''; gFile.value=''; gUrl.value=''; addingGrade = true; window.scrollTo({top: gradeForm.offsetTop - 80, behavior:'smooth'}); });
+  on(addGradeUrlBtn, 'click', () => { gradeForm.classList.remove('hidden'); gName.value=''; gFile.value=''; gUrl.value=''; addingGrade = true; window.scrollTo({top: gradeForm.offsetTop - 80, behavior:'smooth'}); });
+  on(cancelGrade, 'click', () => gradeForm.classList.add('hidden'));
+  on(saveGrade, 'click', async () => {
+    const name = gName.value.trim() || 'Grades';
+    const url = (gUrl.value || '').trim() || null;
+    let fileKey = null, filename = null;
+    const file = gFile.files?.[0];
+    if (!url && !file) { alert('Attach a PDF or provide a URL'); return; }
+    if (file) { fileKey = 'file-' + uid(); await putFile(fileKey, file); filename = file.name; }
+    const item = { id: uid(), name, fileKey, url, filename, uploadedAt: Date.now() };
+    state.documents.grades.unshift(item);
+    saveState();
+    gradeForm.classList.add('hidden');
+    renderGrades();
+  });
+
+  function renderGrades() {
+    gradesList.innerHTML = '';
+    for (const g of state.documents.grades) {
+      const li = document.createElement('div');
+      li.className = 'list-item';
+      const date = new Date(g.uploadedAt || Date.now()).toLocaleDateString();
+      li.innerHTML = `
+        <div class="meta">
+          <strong>${escapeHtml(g.name)}</strong>
+          <small>${g.filename ? escapeHtml(g.filename) + ' • ' : ''}${date}</small>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <a class="btn" href="#" data-open="${g.id}">View</a>
+          ${editMode ? `<button class="btn ghost" data-delg="${g.id}">Delete</button>` : ''}
+        </div>`;
+      gradesList.appendChild(li);
+    }
+
+    on(gradesList, 'click', async (e) => {
+      const openBtn = e.target.closest('[data-open]');
+      const delBtn = e.target.closest('[data-delg]');
+      if (openBtn) {
+        const id = openBtn.getAttribute('data-open');
+        const g = state.documents.grades.find(x => x.id === id);
+        if (!g) return;
+        if (g.url) {
+          window.open(g.url, '_blank');
+        } else if (g.fileKey) {
+          const blob = await getFile(g.fileKey);
+          if (blob) {
+            const url = blobUrl(blob);
+            window.open(url, '_blank');
+          }
+        }
+      }
+      if (delBtn && editMode) {
+        const id = delBtn.getAttribute('data-delg');
+        const g = state.documents.grades.find(x => x.id === id);
+        if (!g) return;
+        if (g.fileKey) await delFile(g.fileKey);
+        state.documents.grades = state.documents.grades.filter(x => x.id !== id);
+        saveState();
+        renderGrades();
+      }
+    });
+
+    // CLICK HANDLER: View => force download (URL or local file)
+    on(gradesList, 'click', async (e) => {
+      const openBtn = e.target.closest('[data-open]');
+      const delBtn  = e.target.closest('[data-delg]');
+      if (openBtn) {
+        e.preventDefault();
+        const id = openBtn.getAttribute('data-open');
+        const g = state.documents.grades.find(x => x.id === id);
+        if (!g) return;
+
+        const suggested = (g.filename && fileSafe(g.filename)) || (fileSafe(g.name) + '.pdf');
+
+        if (g.url) {
+          await forceDownloadFromUrl(g.url, suggested);
+          return;
+        }
+
+        if (g.fileKey) {
+          const blob = await getFile(g.fileKey);
+          if (blob) {
+            downloadFromBlob(blob, suggested);
+          } else {
+            alert('This file is missing in your browser storage. Re-upload it or attach a URL.');
+          }
+          return;
+        }
+
+        alert('No file attached. Edit this entry to add a PDF file or URL.');
+        return;
+      }
+
+      if (delBtn && editMode) {
+        const id = delBtn.getAttribute('data-delg');
+        const g = state.documents.grades.find(x => x.id === id);
+        if (!g) return;
+        if (g.fileKey) await delFile(g.fileKey);
+        state.documents.grades = state.documents.grades.filter(x => x.id !== id);
+        saveState();
+        renderGrades();
+      }
+    });
+  }
+
+  // ======= Duolingo =======
+  on(editDuoBtn, 'click', () => { duoForm.classList.toggle('hidden'); });
+  on(cancelDuo, 'click', () => duoForm.classList.add('hidden'));
+  on(saveDuo, 'click', async () => {
+    const score = dScore.value ? Number(dScore.value) : null;
+    const date = dDate.value || null;
+    const url = (dUrl.value || '').trim() || null;
+    let fileKey = state.documents.duolingo.fileKey;
+    const file = dFile.files?.[0];
+    if (file) { fileKey = 'file-' + uid(); await putFile(fileKey, file); }
+    state.documents.duolingo = { score, date, fileKey: fileKey || null, url };
+    saveState();
+    duoForm.classList.add('hidden');
+    renderDuolingo();
+  });
+
+  function renderDuolingo() {
+    const d = state.documents.duolingo || {};
+    duoScoreBadge.textContent = 'Score: ' + (d.score ?? '—');
+    duoDateBadge.textContent = 'Date: ' + (d.date ?? '—');
+    duoCert.innerHTML = '';
+    if (d.url) {
+      const btn = document.createElement('button');
+      btn.className = 'btn';
+      btn.textContent = 'Download certificate ⤓';
+      btn.addEventListener('click', () => forceDownloadFromUrl(d.url, 'Duolingo_Certificate.pdf'));
+      duoCert.appendChild(btn);
+    } else if (d.fileKey) {
+      getFile(d.fileKey).then(blob => {
+        if (!blob) return;
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.textContent = 'Download certificate ⤓';
+        btn.addEventListener('click', () => downloadFromBlob(blob, 'Duolingo_Certificate.pdf'));
+        duoCert.appendChild(btn);
+      });
+    }
+  }
+
+  // ======= Achievements (Images) =======
+  on(addAchBtn, 'click', () => achForm.classList.remove('hidden'));
+  on(closeAch, 'click', () => achForm.classList.add('hidden'));
+  on(achDrop, 'click', () => achFiles.click());
+
+  function setDrag(on) { achDrop.classList.toggle('drag', on); }
+  ;['dragenter','dragover'].forEach(ev => on(achDrop, ev, e => { e.preventDefault(); setDrag(true);}));
+  ;['dragleave','drop'].forEach(ev => on(achDrop, ev, e => { e.preventDefault(); setDrag(false);}));
+  on(achDrop, 'drop', (e) => handleAchFiles(e.dataTransfer.files));
+  on(achFiles, 'change', () => handleAchFiles(achFiles.files));
+
+  async function handleAchFiles(files) {
+    if (!files || !files.length) return;
+    for (const f of files) {
+      if (!f.type.startsWith('image/')) continue;
+      const imgBlob = await maybeDownscale(f, 1600, 1600);
+      const key = 'file-' + uid();
+      await putFile(key, imgBlob);
+      state.achievements.unshift({ id: uid(), imgKey: key, uploadedAt: Date.now() });
+    }
+    saveState();
+    renderAchievements();
+  }
+
+  async function maybeDownscale(file, maxW, maxH) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        const { width:w, height:h } = img;
+        const ratio = Math.min(maxW / w, maxH / h, 1);
+        const nw = Math.round(w * ratio), nh = Math.round(h * ratio);
+        const c = document.createElement('canvas');
+        c.width = nw; c.height = nh;
+        const ctx = c.getContext('2d');
+        ctx.drawImage(img, 0, 0, nw, nh);
+        c.toBlob(b => resolve(b || file), 'image/jpeg', .85);
+        URL.revokeObjectURL(url);
+      };
+      img.onerror = () => resolve(file);
+      img.src = url;
+    });
+  }
+
+  function renderAchievements() {
+    achGallery.innerHTML = '';
+    for (const a of state.achievements) {
+      const div = document.createElement('div');
+      div.className = 'thumb';
+      const img = document.createElement('img');
+      getFile(a.imgKey).then(b => { if (b) img.src = blobUrl(b); });
+      img.alt = 'Achievement';
+      div.appendChild(img);
+      if (editMode) {
+        const del = document.createElement('button');
+        del.className = 'btn ghost';
+        del.textContent = 'Delete';
+        del.style.position = 'absolute'; del.style.right = '8px'; del.style.bottom = '8px';
+        on(del, 'click', async (e) => { e.stopPropagation(); await delFile(a.imgKey); state.achievements = state.achievements.filter(x => x.id !== a.id); saveState(); renderAchievements(); });
+        div.appendChild(del);
+      }
+      on(div, 'click', () => openLightbox(img.src));
+      achGallery.appendChild(div);
+    }
+  }
+
+  // Lightbox
+  const lightbox = $('#lightbox');
+  on(lightbox, 'click', () => lightbox.classList.remove('open'));
+  function openLightbox(src) { $('img', lightbox).src = src; lightbox.classList.add('open'); }
+
+  // ======= Export / Import =======
+  on(exportBtn, 'click', () => {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'portfolio-data.json'; a.click();
+    URL.revokeObjectURL(url);
+  });
+  on(importFile, 'change', async () => {
+    const f = importFile.files?.[0]; if (!f) return;
+    try {
+      const text = await f.text();
+      const data = JSON.parse(text);
+      state = Object.assign(structuredClone(defaultData), data);
+      saveState();
+      renderAll();
+      alert('Data imported! Note: Files (images/PDFs) are not included in this basic JSON. Re-upload or use URLs.');
+    } catch (e) {
+      alert('Import failed: ' + e.message);
+    }
+  });
+
+  // ======= Helpers =======
+  function escapeHtml(s='') { return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c])); }
+  function fileSafe(name='file'){ return name.trim().replace(/[^\w.-]+/g,'_') || 'file'; }
+  function downloadFromBlob(blob, filename='file.pdf'){
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  }
+  async function forceDownloadFromUrl(fileUrl, filename='file.pdf'){
+    try {
+      const resp = await fetch(fileUrl, { credentials: 'include' });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const blob = await resp.blob();
+      downloadFromBlob(blob, filename);
+    } catch (err) {
+      // Fallback: still try the browser's default download behavior
+      const a = document.createElement('a');
+      a.href = fileUrl; a.download = filename; a.rel = 'noopener';
+      document.body.appendChild(a); a.click(); a.remove();
+    }
+  }
+
+  // ======= Render All =======
+  function renderAll() {
+    renderHero();
+    renderProjects();
+    renderGrades();
+    renderDuolingo();
+    renderAchievements();
+  }
+
+  // Init
+  loadState();
+  renderAll();
+
+  // setEditMode(true); // uncomment if you want edit mode by default
+  </script>
+</body>
+</html>
