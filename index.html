@@ -121,6 +121,16 @@
     details summary { cursor: pointer; font-weight: 600; }
 
     .footer { padding: 40px 0 24px; text-align: center; color: var(--muted); font-size: 14px; }
+
+    /* Stack the Trophies header so the button sits under the title */
+    #achievements .section-head {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    #achievements .section-head .toolbar {
+      margin-top: 4px;
+    }
   </style>
 </head>
 <body>
@@ -151,7 +161,7 @@
           <div class="hero-actions">
             <a id="emailLink" class="btn" href="#">Email</a>
             <a id="githubLink" class="btn ghost" href="#" target="_blank">GitHub</a>
-            <a id="linkedinLink" class="btn ghost" href="#" target="_blank">My school</a>
+            <a id="linkedinLink" class="btn ghost" href="#" target="_blank">My school website</a>
           </div>
         </div>
       </div>
@@ -190,13 +200,26 @@
         <div class="toolbar">
           <button id="saveAllBtn" class="btn hidden">💾 Save</button>
           <button id="exportBtn" class="btn ghost"></button>
-          
           <input id="importFile" class="hidden" type="file" accept="application/json" />
         </div>
       </div>
       <div class="card">
         <textarea id="aboutInput" class="hidden" placeholder="Write a short intro about yourself…"></textarea>
         <p id="aboutDisplay" class="muted" style="white-space:pre-wrap; margin:0;">Hello there, I am a student studying at the highschool Lycée FrancoQatarien Voltaire Doha, I have a passion for computer science, history, economics, buisness and politics.</p>
+      </div>
+    </section>
+
+    <!-- FUN FACTS -->
+    <section id="funfacts">
+      <div class="section-head">
+        <div class="section-title">Fun Facts</div>
+      </div>
+      <div class="card">
+        <ul style="margin: 0 0 0 1.25rem;">
+          <li>I Speak 4 languages (English, French, Arabic, Spanish)</li>
+          <li>I am the top 1 student at my computer science class</li>
+          <li>I was elected class president (and still am) for 3 consecutive years</li>
+        </ul>
       </div>
     </section>
 
@@ -240,7 +263,6 @@
     </section>
 
     <!-- DOCUMENTS (Grades Ps) -->
-     
     <section id="documents">
       <div class="section-head">
         <div class="section-title">Grades — PDFs</div>
@@ -250,11 +272,11 @@
         </div>
       </div>
       <div id="gradesList" class="list"></div>
-<div class="toolbar">
-  <a class="btn" href="https://lityem.github.io/Grades/" target="_blank" rel="noopener">My Grades ↗</a>
-  <button id="addGradePdfBtn" class="btn hidden">➕ Upload PDF</button>
-  <button id="addGradeUrlBtn" class="btn hidden">🔗 Add by URL</button>
-</div>
+      <div class="toolbar">
+        <a class="btn" href="https://lityem.github.io/Grades/" target="_blank" rel="noopener">My Grades ↗</a>
+        <button id="addGradePdfBtn" class="btn hidden">➕ Upload PDF</button>
+        <button id="addGradeUrlBtn" class="btn hidden">🔗 Add by URL</button>
+      </div>
       <form id="gradeForm" class="card hidden" style="margin-top:12px;">
         <div class="row cols-3">
           <div>
@@ -327,8 +349,10 @@
     <!-- ACHIEVEMENTS -->
     <section id="achievements">
       <div class="section-head">
-        <div class="section-title">Trophies, Certificates & Projects I'm currently working on</div>
+        <div class="section-title">Trophies</div>
         <div class="toolbar">
+          <!-- ✅ Added the link button; stacked via CSS above -->
+          <a class="btn" href="https://lityem.github.io/Trophies/" target="_blank" rel="noopener">My Trophies ↗</a>
           <button id="addAchBtn" class="btn hidden">🏆 Upload</button>
         </div>
       </div>
@@ -344,17 +368,15 @@
       </form>
     </section>
 
-    <section>
-      
-        
-    </section>
+    <section></section>
+
     <section id="books">
       <div class="section-head">
         <div class="section-title">Books I’ve Read</div>
       </div>
       <div class="card">
         <div class="toolbar">
-          <a class="btn" href="https://lityem.github.io/Books-I-ve-read/" target="_blank" rel="noopener">The Books page ↗</a>
+          <a class="btn" href="https://lityem.github.io/Books-I-ve-read/" target="_blank" rel="noopener">Open ↗</a>
         </div>
       </div>
     </section>
@@ -423,10 +445,7 @@
       { id: uid(), title: 'Return on Investment Calculator', url: 'https://lityem.github.io/investment/', desc: 'Investment growth & compounding calculator with charts.', tags: ['calculator','finance','web'] },
     ],
     documents: {
-      grades: [
-      
-    ],
-      // ✅ prefill your Duolingo score + cert link
+      grades: [],
       duolingo: { score: 140, date: null, fileKey: null, url: 'https://certs.duolingo.com/44eoxisznmk64s1i' }
     },
     achievements: []
@@ -612,26 +631,26 @@
   });
 
   function renderHero() {
-  const a = state.about;
-  nameDisplay.textContent = a.name || 'Your Name';
-  taglineDisplay.textContent = a.tagline || '';
-  emailLink.href = a.email ? `mailto:${a.email}` : '#';
-  githubLink.href = a.github || '#';
-  linkedinLink.href = a.linkedin || '#';
+    const a = state.about;
+    nameDisplay.textContent = a.name || 'Your Name';
+    taglineDisplay.textContent = a.tagline || '';
+    emailLink.href = a.email ? `mailto:${a.email}` : '#';
+    githubLink.href = a.github || '#';
+    linkedinLink.href = a.linkedin || '#';
 
-  if (a.avatarKey) {
-    getFile(a.avatarKey).then(b => { if (b) avatarImg.src = blobUrl(b); });
-  } else if (a.avatarUrl) {
-    avatarImg.src = a.avatarUrl; // << default image from your repo
-  } else {
-    // fallback SVG placeholder
-    avatarImg.src =
-      'data:image/svg+xml;utf8,' +
-      encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" rx="20" fill="%23e2e8f0"/><circle cx="60" cy="46" r="22" fill="%23cbd5e1"/><rect x="18" y="78" width="84" height="24" rx="12" fill="%23cbd5e1"/></svg>`);
+    if (a.avatarKey) {
+      getFile(a.avatarKey).then(b => { if (b) avatarImg.src = blobUrl(b); });
+    } else if (a.avatarUrl) {
+      avatarImg.src = a.avatarUrl; // default image from your repo
+    } else {
+      // fallback SVG placeholder
+      avatarImg.src =
+        'data:image/svg+xml;utf8,' +
+        encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" rx="20" fill="%23e2e8f0"/><circle cx="60" cy="46" r="22" fill="%23cbd5e1"/><rect x="18" y="78" width="84" height="24" rx="12" fill="%23cbd5e1"/></svg>`);
+    }
+
+    aboutDisplay.textContent = a.bio || '';
   }
-
-  aboutDisplay.textContent = a.bio || '';
-}
 
   // ======= Projects =======
   on(addProjectBtn, 'click', () => { projectForm.classList.remove('hidden'); editingProjectId = null; pTitle.value=''; pUrl.value=''; pTags.value=''; pDesc.value=''; window.scrollTo({top: projectForm.offsetTop - 80, behavior:'smooth'}); });
@@ -692,9 +711,7 @@
   }
   on(projectSearch, 'input', renderProjects);
 
-  // ======= Grades Pdfs =======
   // ======= Grades PDFs =======
-  
   let addingGrade = false;
   on(addGradePdfBtn, 'click', () => { gradeForm.classList.remove('hidden'); gName.value=''; gFile.value=''; gUrl.value=''; addingGrade = true; window.scrollTo({top: gradeForm.offsetTop - 80, behavior:'smooth'}); });
   on(addGradeUrlBtn, 'click', () => { gradeForm.classList.remove('hidden'); gName.value=''; gFile.value=''; gUrl.value=''; addingGrade = true; window.scrollTo({top: gradeForm.offsetTop - 80, behavior:'smooth'}); });
@@ -759,7 +776,7 @@
       }
     });
 
-    // CLICK HANDLER: View => force download (URL or local file)
+    // Force download option
     on(gradesList, 'click', async (e) => {
       const openBtn = e.target.closest('[data-open]');
       const delBtn  = e.target.closest('[data-delg]');
@@ -962,7 +979,7 @@
       const blob = await resp.blob();
       downloadFromBlob(blob, filename);
     } catch (err) {
-      // Fallback: still try the browser's default download behavior
+      // Fallback: default behavior
       const a = document.createElement('a');
       a.href = fileUrl; a.download = filename; a.rel = 'noopener';
       document.body.appendChild(a); a.click(); a.remove();
