@@ -345,19 +345,22 @@
     </section>
 
     <section>
-      <details>
-        <summary>📦 How to publish this site (GitHub Pages / Netlify / Vercel)</summary>
-        <ol>
-          <li>Create a folder with this <strong>index.html</strong> file.</li>
-          <li><strong>GitHub Pages:</strong> Create a repo, add the file, push, then Settings → Pages → Deploy from <em>main</em> (root). URL appears in a minute.</li>
-          <li><strong>Netlify:</strong> Drag-and-drop the folder at app.netlify.com → instant deploy.</li>
-          <li><strong>Vercel:</strong> Import the repo on vercel.com → Deploy.</li>
-          <li>Remember: uploads you add via the site are saved <em>in your browser only</em>. To make files public, commit them to the repo (or host them) and replace with URLs.</li>
-        </ol>
-      </details>
+      
+        
+    </section>
+    <section id="books">
+      <div class="section-head">
+        <div class="section-title">Books I’ve Read</div>
+      </div>
+      <div class="card">
+        <div class="toolbar">
+          <a class="btn" href="https://lityem.github.io/Books-I-ve-read/" target="_blank" rel="noopener">📚 Open the Books page ↗</a>
+        </div>
+      </div>
     </section>
 
-    <div class="footer">Made with ♥ — offline-ready, no backend. Dark/Light, local save, and import/export built-in.</div>
+    <section></section>
+
   </main>
 
   <!-- Lightbox -->
@@ -402,7 +405,9 @@
       email: 'lityempro@gmail.com',
       github: 'https://github.com/lityem',
       linkedin: 'https://www.lyceevoltaire.org/',
-      avatarKey: null
+      avatarKey: null,
+      avatarUrl: 'me.jpeg'
+      
     },
     projects: [
       { id: uid(), title: '2048 Video Game', url: 'https://lityem.github.io/2048-game/', desc: 'Classic 2048 puzzle. Arrow keys to merge tiles.', tags: ['game','web','javascript'] },
@@ -423,7 +428,8 @@
       grades: [
       
     ],
-      duolingo: { score: null, date: null, fileKey: null, url: null }
+      // ✅ prefill your Duolingo score + cert link
+      duolingo: { score: 140, date: null, fileKey: null, url: 'https://certs.duolingo.com/44eoxisznmk64s1i' }
     },
     achievements: []
   };
@@ -434,6 +440,11 @@
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       state = raw ? JSON.parse(raw) : structuredClone(defaultData);
+      // If user already has saved data, gently fill in Duolingo if missing
+      if (!state.documents) state.documents = structuredClone(defaultData.documents);
+      if (!state.documents.duolingo) state.documents.duolingo = structuredClone(defaultData.documents.duolingo);
+      if (state.documents.duolingo.score == null) state.documents.duolingo.score = 140;
+      if (!state.documents.duolingo.url) state.documents.duolingo.url = 'https://certs.duolingo.com/44eoxisznmk64s1i';
     } catch (e) {
       console.error('Failed to load state', e);
       state = structuredClone(defaultData);
@@ -603,20 +614,26 @@
   });
 
   function renderHero() {
-    const a = state.about;
-    nameDisplay.textContent = a.name || 'Your Name';
-    taglineDisplay.textContent = a.tagline || '';
-    emailLink.href = a.email ? `mailto:${a.email}` : '#';
-    githubLink.href = a.github || '#';
-    linkedinLink.href = a.linkedin || '#';
+  const a = state.about;
+  nameDisplay.textContent = a.name || 'Your Name';
+  taglineDisplay.textContent = a.tagline || '';
+  emailLink.href = a.email ? `mailto:${a.email}` : '#';
+  githubLink.href = a.github || '#';
+  linkedinLink.href = a.linkedin || '#';
 
-    if (a.avatarKey) {
-      getFile(a.avatarKey).then(b => { if (b) avatarImg.src = blobUrl(b); });
-    } else {
-      avatarImg.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" rx="20" fill="%23e2e8f0"/><circle cx="60" cy="46" r="22" fill="%23cbd5e1"/><rect x="18" y="78" width="84" height="24" rx="12" fill="%23cbd5e1"/></svg>`);
-    }
-    aboutDisplay.textContent = a.bio || '';
+  if (a.avatarKey) {
+    getFile(a.avatarKey).then(b => { if (b) avatarImg.src = blobUrl(b); });
+  } else if (a.avatarUrl) {
+    avatarImg.src = a.avatarUrl; // << default image from your repo
+  } else {
+    // fallback SVG placeholder
+    avatarImg.src =
+      'data:image/svg+xml;utf8,' +
+      encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" rx="20" fill="%23e2e8f0"/><circle cx="60" cy="46" r="22" fill="%23cbd5e1"/><rect x="18" y="78" width="84" height="24" rx="12" fill="%23cbd5e1"/></svg>`);
   }
+
+  aboutDisplay.textContent = a.bio || '';
+}
 
   // ======= Projects =======
   on(addProjectBtn, 'click', () => { projectForm.classList.remove('hidden'); editingProjectId = null; pTitle.value=''; pUrl.value=''; pTags.value=''; pDesc.value=''; window.scrollTo({top: projectForm.offsetTop - 80, behavior:'smooth'}); });
@@ -805,15 +822,26 @@
 
   function renderDuolingo() {
     const d = state.documents.duolingo || {};
-    duoScoreBadge.textContent = 'Score: ' + (d.score ?? '—');
-    duoDateBadge.textContent = 'Date: ' + (d.date ?? '—');
+    duoScoreBadge.textContent = 'Score: ' + (d.score ? `${d.score}/160` : '—');
+    duoDateBadge.textContent = 'Date: ' + (d.date ?? '27/10/2025');
     duoCert.innerHTML = '';
     if (d.url) {
-      const btn = document.createElement('button');
-      btn.className = 'btn';
-      btn.textContent = 'Download certificate ⤓';
-      btn.addEventListener('click', () => forceDownloadFromUrl(d.url, 'Duolingo_Certificate.pdf'));
-      duoCert.appendChild(btn);
+      const isPdf = /\.(pdf)(\?|#|$)/i.test(d.url);
+      if (isPdf) {
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.textContent = 'Download certificate ⤓';
+        btn.addEventListener('click', () => forceDownloadFromUrl(d.url, 'Duolingo_Certificate.pdf'));
+        duoCert.appendChild(btn);
+      } else {
+        const a = document.createElement('a');
+        a.className = 'btn';
+        a.href = d.url;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = 'View certificate ↗';
+        duoCert.appendChild(a);
+      }
     } else if (d.fileKey) {
       getFile(d.fileKey).then(blob => {
         if (!blob) return;
